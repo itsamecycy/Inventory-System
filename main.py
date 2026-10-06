@@ -31,36 +31,45 @@ def menu(inventory):
 
 def add_product(inventory):
     while True:
-        product_id = int(input("Enter the Product's id: "))
-        if inventory.search_product(product_id) is not None:
-            print("ID already exists")
-        else:
-            product_name = input("Enter the product's name: ").title()
-            product_price = float(input("Enter product's price: "))
-            product_quantity = int(input("Enter amount of quantity: "))
-            product = Product(product_id, product_name, product_price, product_quantity)
-            inventory.add_product(product)
-            break
+        try:
+            product_id = int(input("Enter the Product's id: "))
+            if inventory.search_product(product_id) is None:
+                product_name = input("Enter the product's name: ").title()
+                product_price = float(input("Enter product's price: "))
+                product_quantity = int(input("Enter amount of quantity: "))
+                product = Product(product_id, product_name, product_price, product_quantity)
+                inventory.add_product(product)
+                break
+            else:
+                print("ID already exists")
+        except ValueError:
+            print("Please enter a valid number!")
 
 def remove_product(inventory):
     while True:
-        product_id = int(input("Enter the Product's id: "))
-        if inventory.remove_product(product_id):
-            print("The product was successfully removed.")
-            break
-        else:
-            print("The product you're trying to remove does not exist.")
+        try:
+            product_id = int(input("Enter the Product's id: "))
+            if inventory.remove_product(product_id):
+                print("The product was successfully removed.")
+                break
+            else:
+                print("The product you're trying to remove does not exist.")
+        except ValueError:
+            print("Product ID is invalid.")
 
 def search_product(inventory):
     while True:
-        product_id = int(input("Enter the Product's id: "))
+        try:
+            product_id = int(input("Enter the Product's id: "))
 
-        product = inventory.search_product(product_id)
+            product = inventory.search_product(product_id)
 
-        if product is None:
-            print("The product you're trying to find does not exist.")
-        else:
-            print(product)
-            break
+            if product is None:
+                print("The product you're trying to find does not exist.")
+            else:
+                print(product)
+                break
+        except ValueError:
+            print("Product ID is invalid.")
 
 menu(inventory)
