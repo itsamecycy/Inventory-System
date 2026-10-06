@@ -17,9 +17,10 @@ def menu(inventory):
         elif choice == "3":
             print("Searching for the Product")
         elif choice == "4":
+            print("--- INVENTORY ---")
             inventory.display_inventory()
         elif choice == "5":
-            print("Exiting System")
+            print("Exiting System...")
             break
         else:
             print("Please enter a valid choice and try again!")
@@ -27,13 +28,12 @@ def menu(inventory):
 def add_product(inventory):
     while True:
         product_id = int(input("Enter the Product's id: "))
-        product_name = input("Enter the product's name: ").capitalize()
-        product_price = int(input("Enter product's price: "))
-        product_quantity = int(input("Enter amount of quantity: "))
-
         if inventory.search_product(product_id) is not None:
-            print("Id already exists")
+            print("ID already exists")
         else:
+            product_name = input("Enter the product's name: ").title()
+            product_price = float(input("Enter product's price: "))
+            product_quantity = int(input("Enter amount of quantity: "))
             product = Product(product_id, product_name, product_price, product_quantity)
             inventory.add_product(product)
             break
