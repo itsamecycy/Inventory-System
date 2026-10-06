@@ -25,11 +25,17 @@ def menu(inventory):
             print("Please enter a valid choice and try again!")
 
 def add_product(inventory):
-    product_id = int(input("Enter the Product's id: "))
-    product_name = input("Enter the product's name: ")
-    product_price = int(input("Enter product's price: "))
-    product_quantity = int(input("Enter amount of quantity: "))
-    product = Product(product_id, product_name, product_price, product_quantity)
-    inventory.add_product(product)
+    while True:
+        product_id = int(input("Enter the Product's id: "))
+        product_name = input("Enter the product's name: ").capitalize()
+        product_price = int(input("Enter product's price: "))
+        product_quantity = int(input("Enter amount of quantity: "))
+
+        if inventory.search_product(product_id) is not None:
+            print("Id already exists")
+        else:
+            product = Product(product_id, product_name, product_price, product_quantity)
+            inventory.add_product(product)
+            break
 
 menu(inventory)
