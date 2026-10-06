@@ -1,26 +1,25 @@
 from product import Product
 from inventory import Inventory
 
-product1 = Product(1, 'Air Pods', 900, 10)
-product2 = Product(2, 'Keyboard', 200, 5)
-product3 = Product(3, 'Mouse', 100, 10)
+def menu():
+    while True:
+        print("===== INVENTORY SYSTEM =====")
+        print("1. Add Product\n", "2. Remove Product\n", "3. Search Product\n", "4. Display Product\n", "5. Exit\n")
 
-inventory = Inventory()
-inventory.add_product(product1)
-inventory.add_product(product2)
-inventory.add_product(product3)
+        choice = int(input("Choose an option: "))
 
-inventory.display_inventory()
+        if choice == 1:
+            print("Adding product")
+        elif choice == 2:
+            print("Removing Product")
+        elif choice == 3:
+            print("Searching for the Product")
+        elif choice == 4:
+            print("Displaying Product")
+        elif choice == 5:
+            print("Exiting System")
+            break
+        else:
+            print("Please enter a valid choice and try again!")
 
-inventory.remove_product(1)
-
-print("Current inventory:")
-
-inventory.display_inventory()
-
-search = inventory.search_product(2)
-
-if search:
-    print("Product found: ", search)
-else:
-    print("Product not found.")
+menu()

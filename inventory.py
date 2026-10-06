@@ -6,7 +6,12 @@ class Inventory:
         self.products.append(product)
 
     def remove_product(self, product_id):
-        self.products = [product for product in self.products if product.id != product_id]
+        for product in self.products:
+            if product.id == product_id:
+                self.products.remove(product)
+                return True
+
+        return False
 
     def display_inventory(self):
         for product in self.products:
