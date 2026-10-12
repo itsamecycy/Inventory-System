@@ -32,5 +32,12 @@ class Product:
             self.quantity -= quantity
             print(f"Removed {quantity} units of {self.name} from stock.")
 
+    def update_price(self, new_price):
+        if new_price < 0:
+            print("Price cannot be negative!")
+        else:
+            self.price = new_price
+            print(f"Price of {self.name} has been updated to {self.price}.")
+
     def __str__(self):
         return f"Product ID: {self.id}, Name: {self.name}, Price: ${self.price}, Quantity: {self.quantity}"
