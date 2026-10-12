@@ -37,7 +37,14 @@ class Product:
             print("Price cannot be negative!")
         else:
             self.price = new_price
-            print(f"Price of {self.name} has been updated to {self.price}.")
+            print(f"Price of {self.name} has been updated to ${self.price}.")
+
+    def update_name(self, new_name):
+        if not new_name.strip():
+            print("Name cannot be empty.")
+        else:
+            self.name = new_name.strip().title()
+            print(f"Product's name has been updated to {self.name}.")
 
     def __str__(self):
         return f"Product ID: {self.id}, Name: {self.name}, Price: ${self.price}, Quantity: {self.quantity}"

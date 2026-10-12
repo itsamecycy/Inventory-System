@@ -5,7 +5,7 @@ inventory = Inventory()
 
 def menu(inventory):
     while True:
-        print("===== INVENTORY SYSTEM =====")
+        print("\n===== INVENTORY SYSTEM =====")
         print("1. Add Product\n", 
               "2. Remove Product\n", 
               "3. Search Product\n", 
@@ -25,7 +25,7 @@ def menu(inventory):
             print("--- INVENTORY ---")
             inventory.display_inventory()
         elif choice == "5":
-            update_product(inventory)
+            update_menu(inventory)
         elif choice == "6":
             print("Exiting System...")
             break
@@ -102,25 +102,52 @@ def search_product(inventory):
         except ValueError:
             print("Product ID is invalid.")
 
-def update_product(inventory):
+def update_price(inventory):
     while True:
         try:
             product_id = int(input("Enter the product's ID to update: "))
             
             if product_id <= 0:
-                print("Product ID cannot be less than zero.")
+                print("Product ID must be greater than zero.")
                 continue
 
             product = inventory.search_product(product_id)
 
             if product is None:
                 print("The product you're trying to find does not exist.")
-            else:
-                product_price = float(input("Enter the new price: "))
-                product.update_price(product_price)
-                break
+                continue
+
+            while True:
+                try:
+                    product_price = float(input("Enter the new price: "))
+
+                    if product_price < 0:
+                        print("Price cannot be negative.")
+                        continue
+
+                    product.update_price(product_price)
+                    break
+                except ValueError:
+                    print("PLease enter a valid price.")
+
+            break
 
         except ValueError:
             print("Please enter a valid ID!")
+
+def update_menu(inventory):
+    while True:
+        print("\nWhat would you like to update?")
+        print("1. Product Name\n", "2. Product Price\n", "3. Back\n")
+        
+        update_choice = input("Choose what to update: ")
+
+        if update_choice == "1":
+            print("Updating product's name")
+        elif update_choice == "2":
+            update_price(inventory)
+        elif update_choice == "3":
+            print("Going back to main menu...")
+            break
 
 menu(inventory)
