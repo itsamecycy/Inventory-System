@@ -102,52 +102,82 @@ def search_product(inventory):
         except ValueError:
             print("Product ID is invalid.")
 
-def update_price(inventory):
+def update_price(product):
     while True:
         try:
-            product_id = int(input("Enter the product's ID to update: "))
-            
-            if product_id <= 0:
-                print("Product ID must be greater than zero.")
+            product_price = float(input("Enter the new price: "))
+
+            if product_price < 0:
+                print("Price cannot be negative.")
                 continue
 
-            product = inventory.search_product(product_id)
-
-            if product is None:
-                print("The product you're trying to find does not exist.")
-                continue
-
-            while True:
-                try:
-                    product_price = float(input("Enter the new price: "))
-
-                    if product_price < 0:
-                        print("Price cannot be negative.")
-                        continue
-
-                    product.update_price(product_price)
-                    break
-                except ValueError:
-                    print("PLease enter a valid price.")
-
+            product.update_price(product_price)
             break
 
         except ValueError:
-            print("Please enter a valid ID!")
+            print("Please enter a valid price!")
+
+def update_name(product):
+    while True:
+        product_name = input("Enter the new name for the product: ").strip().title()
+
+        if not product_name.strip():
+            print("Name cannot be empty!")
+        else:
+            product.update_name(product_name)
+            break
+
+def update_quantity(product):
+    while True:
+        try:
+            product_quantity = int(input("Enter the new # quantity: "))
+        
+            if product_quantity < 0:
+                print("quantity cannot be negative.")
+                continue
+        
+            product.update_quantity(product_quantity)
+            break
+        
+        except ValueError:
+            print("Please enter a valid quantity!")
 
 def update_menu(inventory):
+
     while True:
+        try:
+            product_id = int(input("Enter the Product's id: "))
+            if product_id <= 0:
+                print("Product ID must be greater than zero!")
+                continue
+    
+            product = inventory.search_product(product_id)
+    
+            if product is None:
+                    print("The product you're trying to find does not exist.")
+            else:
+                print(product)
+                break
+        except ValueError:
+            print("Product ID is invalid.")
+
+    while True:
+
         print("\nWhat would you like to update?")
-        print("1. Product Name\n", "2. Product Price\n", "3. Back\n")
+        print("1. Product Name\n", "2. Product Price\n", "3. Product Stock\n", "4. Exit\n")
         
         update_choice = input("Choose what to update: ")
 
         if update_choice == "1":
-            print("Updating product's name")
+            update_name(product)
         elif update_choice == "2":
-            update_price(inventory)
+            update_price(product)
         elif update_choice == "3":
+            update_quantity(product)
+        elif update_choice == "4":
             print("Going back to main menu...")
             break
+        else:
+            print("Please enter a valid choice!")
 
 menu(inventory)

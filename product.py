@@ -46,5 +46,12 @@ class Product:
             self.name = new_name.strip().title()
             print(f"Product's name has been updated to {self.name}.")
 
+    def update_quantity(self, new_quantity):
+        if new_quantity <= 0:
+            print("Quantity cannot be negative!")
+        else:
+            self.quantity = new_quantity
+            print(f"Quantity of {self.name} has been updated to {self.quantity}.")
+
     def __str__(self):
         return f"Product ID: {self.id}, Name: {self.name}, Price: ${self.price}, Quantity: {self.quantity}"
