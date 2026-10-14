@@ -47,8 +47,8 @@ class Product:
             print(f"Product's name has been updated to {self.name}.")
 
     def update_quantity(self, new_quantity):
-        if new_quantity <= 0:
-            print("Quantity cannot be negative!")
+        if new_quantity < 0:
+            print("Quantity cannot be less than 0!")
         else:
             self.quantity = new_quantity
             print(f"Quantity of {self.name} has been updated to {self.quantity}.")

@@ -1,6 +1,8 @@
 from product import Product
 from inventory import Inventory
 
+#SELECT * FROM inventory_system.products; run in MySQL workbench to check table of products
+
 inventory = Inventory()
 
 def menu(inventory):
@@ -11,7 +13,9 @@ def menu(inventory):
               "3. Search Product\n", 
               "4. Display Product\n", 
               "5. Update Product\n",
-              "6. Exit\n")
+              "6. Calculate total Inventory Value\n",
+              "7. Stock Report\n",
+              "8. Exit\n")
 
         choice = input("Choose an option: ")
 
@@ -27,7 +31,12 @@ def menu(inventory):
         elif choice == "5":
             update_menu(inventory)
         elif choice == "6":
-            print("Exiting System...")
+            calc_total = inventory.calc_total_value()
+            print(f"Total Inventory Value is ${calc_total:,.2f}.")
+        elif choice == "7":
+            low_stock = inventory.low_stock_report()
+        elif choice == "8":
+            print("Exiting program.....")
             break
         else:
             print("Please enter a valid choice and try again!")
@@ -41,7 +50,12 @@ def add_product(inventory):
                 print("Product ID must be greater than zero!")
                 continue
             if inventory.search_product(product_id) is None:
-                product_name = input("Enter the product's name: ").title()
+                while True:
+                    product_name = input("Enter the product's name: ").strip().title()
+                    if not product_name:
+                        print("Name cannot be empty.")
+                        continue
+                    break
                 while True:
                     try:
                         product_price = float(input("Enter product's price: "))
@@ -60,10 +74,16 @@ def add_product(inventory):
                         break
                     except ValueError:
                         print("Please enter a valid quantity!")
+                
                 product = Product(product_id, product_name, product_price, product_quantity)
-                inventory.add_product(product)
-                print("Product has been added successfully!")
-                break
+
+                if inventory.add_product(product):
+                    print("Product has been added successfully!")
+                    break
+                else:
+                    print("Could not add product. The ID may already exist.")
+                    break
+
             else:
                 print("ID already exists")
         except ValueError:
@@ -102,7 +122,8 @@ def search_product(inventory):
         except ValueError:
             print("Product ID is invalid.")
 
-def update_price(product):
+
+def update_price(inventory, product):
     while True:
         try:
             product_price = float(input("Enter the new price: "))
@@ -111,36 +132,61 @@ def update_price(product):
                 print("Price cannot be negative.")
                 continue
 
-            product.update_price(product_price)
+            if inventory.update_product_price(product.id, product_price):
+                print("Price updated successfully!")
+                print(inventory.search_product(product.id))
+            else:
+                print("Price was not changed, or the product was not found.")
+
             break
 
         except ValueError:
             print("Please enter a valid price!")
 
-def update_name(product):
+
+def update_name(inventory, product):
     while True:
-        product_name = input("Enter the new name for the product: ").strip().title()
+        product_name = input(
+            "Enter the new name for the product: "
+        ).strip().title()
 
-        if not product_name.strip():
+        if not product_name:
             print("Name cannot be empty!")
-        else:
-            product.update_name(product_name)
-            break
+            continue
 
-def update_quantity(product):
+        if inventory.update_product_name(product.id, product_name):
+            print("Name updated successfully!")
+            print(inventory.search_product(product.id))
+        else:
+            print("Name was not changed, or the product was not found.")
+
+        break
+
+
+def update_quantity(inventory, product):
     while True:
         try:
-            product_quantity = int(input("Enter the new # quantity: "))
-        
+            product_quantity = int(input("Enter the new quantity: "))
+
             if product_quantity < 0:
-                print("quantity cannot be negative.")
+                print("Quantity cannot be negative.")
                 continue
-        
-            product.update_quantity(product_quantity)
+
+            if inventory.update_product_quantity(
+                product.id, product_quantity
+            ):
+                print("Quantity updated successfully!")
+                print(inventory.search_product(product.id))
+            else:
+                print(
+                    "Quantity was not changed, or the product was not found."
+                )
+
             break
-        
+
         except ValueError:
             print("Please enter a valid quantity!")
+
 
 def update_menu(inventory):
 
@@ -169,15 +215,19 @@ def update_menu(inventory):
         update_choice = input("Choose what to update: ")
 
         if update_choice == "1":
-            update_name(product)
+            update_name(inventory, product)
         elif update_choice == "2":
-            update_price(product)
+            update_price(inventory, product)
         elif update_choice == "3":
-            update_quantity(product)
+            update_quantity(inventory, product)
         elif update_choice == "4":
             print("Going back to main menu...")
             break
         else:
             print("Please enter a valid choice!")
 
-menu(inventory)
+try:
+    menu(inventory)
+finally:
+    inventory.connection.close()
+    print("Database connection closed.")
