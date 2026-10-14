@@ -73,22 +73,17 @@ python -m pip install -r requirements.txt
 
 ### 4. Create the MySQL database
 
-Open MySQL Workbench or another MySQL client and execute:
+Make sure your MySQL Server is running. Open MySQL Workbench or another MySQL client and execute the SQL script in `schema.sql`.
 
-```sql
-CREATE DATABASE inventory_system;
+Alternatively, run the following command from your project directory in a terminal:
 
-USE inventory_system;
-
-CREATE TABLE products (
-    id INT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    price DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-    quantity INT NOT NULL DEFAULT 0
-);
+```bash
+mysql -u your_mysql_username -p < schema.sql
 ```
 
-This creates the database and the table used to store product information.
+Replace `your_mysql_username` with your MySQL username. Enter your password when prompted.
+
+This creates the `inventory_system` database and the `products` table if they do not already exist.
 
 ### 5. Configure the environment variables
 
