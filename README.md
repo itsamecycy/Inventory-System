@@ -148,3 +148,5 @@ Product records are stored in MySQL rather than only in memory, allowing the dat
 ## Author
 
 Developed as a Python programming project to practice object-oriented programming, database integration, SQL, and version control.
+
+[![Visit my profile](https://avatars.githubusercontent.com/u/208029813?v=4)](https://github.com/itsamecycy)
